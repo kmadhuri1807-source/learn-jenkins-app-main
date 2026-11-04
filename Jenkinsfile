@@ -71,6 +71,7 @@ pipeline {
             }
             steps {
                 sh '''
+                apk add --no-cache python3 make g++ vips-dev
                 npm install netlify-cli
                 node_modules/.bin/netlify --version
                 node_modules/.bin/netlify deploy --dir=build --prod 
