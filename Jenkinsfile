@@ -17,7 +17,8 @@ pipeline {
                 '''
             }
         }*/
-        stage('Junit') {
+        parallel {
+            stage('Junit') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -54,6 +55,7 @@ pipeline {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                 }
             }
+        }
         }
     }
 }
