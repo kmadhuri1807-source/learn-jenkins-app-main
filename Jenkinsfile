@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+        /*
         stage('Build') {
             agent {
                 docker {
@@ -15,7 +16,7 @@ pipeline {
                 npm run build
                 '''
             }
-        }
+        }*/
         stage('Junit') {
             agent {
                 docker {
@@ -28,6 +29,11 @@ pipeline {
                 npm test
                 '''
             }
+            post {
+            always {
+                junit 'test-results/junit.xml'
+            }
+            }
         }
         stage('E2E') {
             agent {
@@ -39,15 +45,10 @@ pipeline {
             steps {
                 sh '''
                 npm install serve
-                node_modules/.bin/serve -s build
+                node_modules/.bin/serve -s build &
                 npx playwright test
                 '''
             }
         }
-    }
-    post {
-            always {
-                junit 'test-results/junit.xml'
-            }
     }
 }
