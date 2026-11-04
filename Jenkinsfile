@@ -5,11 +5,11 @@ pipeline {
         NETLIFY_AUTH_TOKEN = credentials('netlify_token')
     }
     stages {
-        /*
+        
         stage('Build') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:22-bookworm'
                     reuseNode true
                 }
             }
@@ -19,13 +19,13 @@ pipeline {
                 npm run build
                 '''
             }
-        }*/
+        }
         stage('Test') {
             parallel {
                 stage('Junit') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:22-bookworm'
                     reuseNode true
                 }
             }
@@ -65,12 +65,13 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:22-bookworm'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
+                npm install netlify-cli
                 node_modules/.bin/netlify --version
                 node_modules/.bin/netlify deploy --dir=build --prod 
                 '''
