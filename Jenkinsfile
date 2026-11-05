@@ -15,6 +15,7 @@ pipeline {
             }
             steps {
                 sh '''
+                echo "Jenkins"
                 npm ci
                 npm run build
                 '''
